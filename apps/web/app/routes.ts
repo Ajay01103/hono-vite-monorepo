@@ -4,4 +4,6 @@ export default [
   index("routes/home.tsx"),
   route("/sign-in", "routes/sign-in.tsx"),
   route("/sign-up", "routes/sign-up.tsx"),
+  // Catch-all for Chrome DevTools and other unmatched routes
+  route("*", "routes/404.tsx"),
 ] satisfies RouteConfig

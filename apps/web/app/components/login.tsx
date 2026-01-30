@@ -5,6 +5,7 @@ import { Label } from "~/components/ui/label"
 import { Link } from "react-router"
 import { useForm } from "@tanstack/react-form"
 import { z } from "zod/v4"
+import { useLogin } from "~/api/useAuth"
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -12,6 +13,7 @@ const loginSchema = z.object({
 })
 
 export default function LoginPage() {
+  const { mutate, isPending } = useLogin()
   const form = useForm({
     defaultValues: {
       email: "",
@@ -21,13 +23,16 @@ export default function LoginPage() {
       onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Login form values:", value)
+      mutate({
+        email: value.email,
+        password: value.password,
+      })
     },
   })
 
   return (
     <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
-      <div className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
+      <div className="bg-card m-auto h-fit w-full md:max-w-md max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -174,8 +179,9 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full">
-                Sign In
+                className="w-full"
+                disabled={isPending}>
+                {isPending ? "Signing in..." : "Sign In"}
               </Button>
             </div>
           </div>

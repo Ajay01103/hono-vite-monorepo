@@ -5,6 +5,7 @@ import { Label } from "~/components/ui/label"
 import { Link } from "react-router"
 import { useForm } from "@tanstack/react-form"
 import { z } from "zod/v4"
+import { useRegister } from "~/api/useAuth"
 
 const registerSchema = z.object({
   firstname: z.string().min(2, "First name must be at least 2 characters"),
@@ -14,6 +15,7 @@ const registerSchema = z.object({
 })
 
 export default function RegisterPage() {
+  const { mutate, isPending } = useRegister()
   const form = useForm({
     defaultValues: {
       firstname: "",
@@ -25,13 +27,17 @@ export default function RegisterPage() {
       onSubmit: registerSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Register form values:", value)
+      mutate({
+        name: `${value.firstname} ${value.lastname}`,
+        email: value.email,
+        password: value.password,
+      })
     },
   })
 
   return (
     <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
-      <div className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
+      <div className="bg-card m-auto h-fit w-full md:max-w-md max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -229,8 +235,9 @@ export default function RegisterPage() {
 
               <Button
                 type="submit"
-                className="w-full">
-                Continue
+                className="w-full"
+                disabled={isPending}>
+                {isPending ? "Creating account..." : "Continue"}
               </Button>
             </div>
           </div>

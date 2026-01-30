@@ -15,6 +15,13 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
             // With SSR, we usually want to set some default staleTime
             // above 0 to avoid refetching immediately on the client
             staleTime: 60 * 1000,
+            // Disable persistence to avoid collision with Redux persist
+            gcTime: 5 * 60 * 1000, // 5 minutes garbage collection
+            refetchOnWindowFocus: false,
+          },
+          mutations: {
+            // Mutations are handled by Redux, so no need for React Query persistence
+            retry: 1,
           },
         },
       }),

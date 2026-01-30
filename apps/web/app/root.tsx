@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root"
 import QueryProvider from "~/providers/query-provider"
+import ReduxProvider from "~/providers/redux-provider"
 import "./app.css"
 
 export const links: Route.LinksFunction = () => [
@@ -47,9 +48,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <QueryProvider>
-      <Outlet />
-    </QueryProvider>
+    <ReduxProvider>
+      <QueryProvider>
+        <Outlet />
+      </QueryProvider>
+    </ReduxProvider>
   )
 }
 
