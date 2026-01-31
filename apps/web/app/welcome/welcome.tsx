@@ -1,8 +1,12 @@
+import { useAppSelector } from "~/store/hooks"
 import { Button } from "~/components/ui/button"
 import logoDark from "./logo-dark.svg"
 import logoLight from "./logo-light.svg"
+import { Link } from "react-router"
 
 export function Welcome() {
+  const { user, isAuthenticated, accessToken, expiresAt } = useAppSelector((state) => state.auth)
+
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -20,6 +24,76 @@ export function Welcome() {
             />
           </div>
         </header>
+
+        {/* Auth Status Section */}
+        <div className="max-w-[400px] w-full space-y-6 px-4">
+          <div className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 text-center">
+              Authentication Status
+            </h2>
+            
+            {isAuthenticated && user ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-center">
+                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                    {user.profilePicture ? (
+                      <img 
+                        src={user.profilePicture} 
+                        alt={user.name}
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="text-center space-y-2">
+                  <p className="text-green-600 dark:text-green-400 font-medium">
+                    ✅ Authenticated
+                  </p>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                    <p><strong>Name:</strong> {user.name}</p>
+                    <p><strong>Email:</strong> {user.email}</p>
+                    <p><strong>User ID:</strong> {user.id}</p>
+                    <p><strong>Member since:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 text-xs">
+                  <p className="text-gray-600 dark:text-gray-400 mb-2">
+                    <strong>Session Info:</strong>
+                  </p>
+                  <div className="space-y-1 text-gray-500 dark:text-gray-500">
+                    <p>Token: {accessToken ? `${accessToken.substring(0, 20)}...` : 'None'}</p>
+                    <p>Expires: {expiresAt ? new Date(expiresAt).toLocaleString() : 'Never'}</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto">
+                  <span className="text-red-600 dark:text-red-400 text-2xl">❌</span>
+                </div>
+                <p className="text-red-600 dark:text-red-400 font-medium">
+                  Not Authenticated
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Please log in to see your profile information
+                </p>
+                
+                <Link to="/sign-in">
+                <Button className="w-full">
+                  Go to Login
+                </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="max-w-[300px] w-full space-y-6 px-4">
           <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
             <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
