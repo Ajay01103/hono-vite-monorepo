@@ -114,7 +114,7 @@ const app = new Hono<{ Bindings: CloudflareBindings; Variables: Variables }>()
 
         // Generate JWT token
         const { token, expiresAt } = signJwtToken({
-          userId: String(user.id),
+          userId: user.id,
         })
 
         // Return response without password

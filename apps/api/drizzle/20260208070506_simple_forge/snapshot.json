@@ -1,7 +1,7 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "b1778b43-c820-4c8d-bb76-47734a5c1d5b",
+  "id": "4b0147a4-6867-46ea-93dd-1e3b08e89600",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -23,9 +23,9 @@
       "entityType": "tables"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": false,
-      "autoincrement": true,
+      "autoincrement": false,
       "default": null,
       "generated": null,
       "name": "id",
@@ -33,7 +33,7 @@
       "table": "report_settings"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
@@ -103,9 +103,9 @@
       "table": "report_settings"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": false,
-      "autoincrement": true,
+      "autoincrement": false,
       "default": null,
       "generated": null,
       "name": "id",
@@ -113,7 +113,7 @@
       "table": "reports"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
@@ -173,9 +173,9 @@
       "table": "reports"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": false,
-      "autoincrement": true,
+      "autoincrement": false,
       "default": null,
       "generated": null,
       "name": "id",
@@ -183,7 +183,7 @@
       "table": "transactions"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
@@ -343,9 +343,9 @@
       "table": "transactions"
     },
     {
-      "type": "integer",
+      "type": "text",
       "notNull": false,
-      "autoincrement": true,
+      "autoincrement": false,
       "default": null,
       "generated": null,
       "name": "id",

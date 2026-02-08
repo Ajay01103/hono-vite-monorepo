@@ -32,7 +32,7 @@ const app = new Hono<{ Bindings: CloudflareBindings; Variables: Variables }>()
       const db = c.get("db")
 
       const user = await db.query.users.findFirst({
-        where: { id: Number(payload.userId) },
+        where: { id: payload.userId },
       })
 
       if (!user) {
@@ -72,7 +72,7 @@ const app = new Hono<{ Bindings: CloudflareBindings; Variables: Variables }>()
       }
 
       const db = c.get("db")
-      const userId = Number(payload.userId)
+      const userId = payload.userId
 
       // Check if user exists
       const existingUser = await db.query.users.findFirst({

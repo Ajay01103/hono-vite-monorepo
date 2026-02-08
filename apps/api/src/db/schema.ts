@@ -1,5 +1,6 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core"
 import { sql } from "drizzle-orm"
+import { createId } from "@paralleldrive/cuid2"
 
 // Enums
 export const TransactionStatusEnum = {
@@ -42,7 +43,9 @@ export const ReportFrequencyEnum = {
 
 // Users Table
 export const users = sqliteTable("users", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
@@ -57,8 +60,10 @@ export const users = sqliteTable("users", {
 
 // Transactions Table
 export const transactions = sqliteTable("transactions", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  userId: integer("user_id")
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   type: text("type", { enum: ["INCOME", "EXPENSE"] }).notNull(),
@@ -94,8 +99,10 @@ export const transactions = sqliteTable("transactions", {
 
 // Reports Table
 export const reports = sqliteTable("reports", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  userId: integer("user_id")
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   period: text("period").notNull(),
@@ -113,8 +120,10 @@ export const reports = sqliteTable("reports", {
 
 // Report Settings Table
 export const reportSettings = sqliteTable("report_settings", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  userId: integer("user_id")
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   frequency: text("frequency", { enum: ["MONTHLY"] })

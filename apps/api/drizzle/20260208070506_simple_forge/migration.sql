@@ -1,6 +1,6 @@
 CREATE TABLE `report_settings` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`user_id` integer NOT NULL,
+	`id` text PRIMARY KEY,
+	`user_id` text NOT NULL,
 	`frequency` text DEFAULT 'MONTHLY' NOT NULL,
 	`is_enabled` integer DEFAULT false NOT NULL,
 	`next_report_date` integer,
@@ -11,8 +11,8 @@ CREATE TABLE `report_settings` (
 );
 --> statement-breakpoint
 CREATE TABLE `reports` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`user_id` integer NOT NULL,
+	`id` text PRIMARY KEY,
+	`user_id` text NOT NULL,
 	`period` text NOT NULL,
 	`sent_date` integer NOT NULL,
 	`status` text DEFAULT 'PENDING' NOT NULL,
@@ -22,8 +22,8 @@ CREATE TABLE `reports` (
 );
 --> statement-breakpoint
 CREATE TABLE `transactions` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`user_id` integer NOT NULL,
+	`id` text PRIMARY KEY,
+	`user_id` text NOT NULL,
 	`type` text NOT NULL,
 	`title` text NOT NULL,
 	`amount` integer NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `transactions` (
 );
 --> statement-breakpoint
 CREATE TABLE `users` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
+	`id` text PRIMARY KEY,
 	`name` text NOT NULL,
 	`email` text NOT NULL UNIQUE,
 	`password` text NOT NULL,

@@ -2,6 +2,7 @@ import { Hono } from "hono"
 import { cors } from "hono/cors"
 import authRoute from "./routes/auth.route"
 import userRoute from "./routes/user.route"
+import transactionRoute from "./routes/transaction.route"
 import { getDb, type Database } from "./db"
 
 type Variables = {
@@ -24,6 +25,7 @@ const routes = app
   .basePath("/api")
   .route("/auth", authRoute)
   .route("/users", userRoute)
+  .route("/transactions", transactionRoute)
   .get("/", (c) => {
     return c.json({ message: "Hello from Hono API!" }, 200)
   })
