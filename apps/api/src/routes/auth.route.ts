@@ -61,11 +61,18 @@ const app = new Hono<{ Bindings: CloudflareBindings; Variables: Variables }>()
           lastSentDate: null,
         })
 
-        // Return user without password
+        // Generate JWT token
+        const { token, expiresAt } = signJwtToken({
+          userId: newUser.id,
+        })
+
+        // Return user without password and with access token
         return c.json(
           {
             message: "User registered successfully",
-            data: { user: omitPassword(newUser) },
+            user: omitPassword(newUser),
+            accessToken: token,
+            expiresAt,
           },
           201,
         )
