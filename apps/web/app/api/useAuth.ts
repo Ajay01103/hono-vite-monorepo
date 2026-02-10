@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { client } from "../lib/client"
 import { useAppDispatch } from "~/store/hooks"
 import { setCredentials } from "~/store/slices/authSlice"
+import { toast } from "sonner"
 
 interface LoginCredentials {
   email: string
@@ -39,6 +40,9 @@ export const useLogin = () => {
         }),
       )
     },
+    onError: (error) => {
+      toast.error(error.name, { description: error.message })
+    },
   })
 }
 
@@ -61,11 +65,30 @@ export const useRegister = () => {
     onSuccess: (data) => {
       dispatch(
         setCredentials({
-          user: data.data.user,
-          accessToken: data.data.user.id.toString(),
-          expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+          user: data.user,
+          accessToken: data.accessToken,
+          expiresAt: data.expiresAt as number,
         }),
       )
+    },
+    onError: (error) => {
+      toast.error(error.name, { description: error.message })
+    },
+  })
+}
+
+export const getServerAuthSession = () => {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const response = await client.api.users["current-user"].$get()
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || "Login failed")
+      }
+
+      return response.json()
     },
   })
 }

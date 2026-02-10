@@ -1,11 +1,13 @@
-import { useAppSelector } from "~/store/hooks"
+import { Link } from "react-router"
 import { Button } from "~/components/ui/button"
+import { useAppSelector } from "~/store/hooks"
 import logoDark from "./logo-dark.svg"
 import logoLight from "./logo-light.svg"
-import { Link } from "react-router"
 
 export function Welcome() {
-  const { user, isAuthenticated, accessToken, expiresAt } = useAppSelector((state) => state.auth)
+  const { user, isAuthenticated, accessToken, expiresAt } = useAppSelector(
+    (state) => state.auth,
+  )
 
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
@@ -31,14 +33,14 @@ export function Welcome() {
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 text-center">
               Authentication Status
             </h2>
-            
+
             {isAuthenticated && user ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-center">
                   <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
                     {user.profilePicture ? (
-                      <img 
-                        src={user.profilePicture} 
+                      <img
+                        src={user.profilePicture}
                         alt={user.name}
                         className="w-16 h-16 rounded-full object-cover"
                       />
@@ -49,16 +51,26 @@ export function Welcome() {
                     )}
                   </div>
                 </div>
-                
+
                 <div className="text-center space-y-2">
                   <p className="text-green-600 dark:text-green-400 font-medium">
                     ✅ Authenticated
                   </p>
+
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                    <p><strong>Name:</strong> {user.name}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>User ID:</strong> {user.id}</p>
-                    <p><strong>Member since:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+                    <p>
+                      <strong>Name:</strong> {user.name}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {user.email}
+                    </p>
+                    <p>
+                      <strong>User ID:</strong> {user.id}
+                    </p>
+                    <p>
+                      <strong>Member since:</strong>{" "}
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
 
@@ -67,8 +79,13 @@ export function Welcome() {
                     <strong>Session Info:</strong>
                   </p>
                   <div className="space-y-1 text-gray-500 dark:text-gray-500">
-                    <p>Token: {accessToken ? `${accessToken.substring(0, 20)}...` : 'None'}</p>
-                    <p>Expires: {expiresAt ? new Date(expiresAt).toLocaleString() : 'Never'}</p>
+                    <p>
+                      Token: {accessToken ? `${accessToken.substring(0, 20)}...` : "None"}
+                    </p>
+                    <p>
+                      Expires:{" "}
+                      {expiresAt ? new Date(expiresAt).toLocaleString() : "Never"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -83,11 +100,9 @@ export function Welcome() {
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   Please log in to see your profile information
                 </p>
-                
+
                 <Link to="/sign-in">
-                <Button className="w-full">
-                  Go to Login
-                </Button>
+                  <Button className="w-full">Go to Login</Button>
                 </Link>
               </div>
             )}

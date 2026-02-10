@@ -1,13 +1,18 @@
 import type { Route } from "./+types/home"
+import { PrivateGuard } from "~/components/route-guards"
 import { Welcome } from "../welcome/welcome"
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Home" },
+    { name: "description", content: "Welcome to your dashboard" },
   ]
 }
 
 export default function Home() {
-  return <Welcome />
+  return (
+    <PrivateGuard>
+      <Welcome />
+    </PrivateGuard>
+  )
 }

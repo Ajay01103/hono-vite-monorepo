@@ -1,13 +1,15 @@
 import RegisterPage from "~/components/register"
-import type { Route } from "./+types/home"
+import { AuthGuard } from "~/components/route-guards"
+import type { Route } from "./+types/sign-up"
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ]
+  return [{ title: "Sign Up" }, { name: "description", content: "Create a new account" }]
 }
 
-export default function Home() {
-  return <RegisterPage />
+export default function SignUp() {
+  return (
+    <AuthGuard>
+      <RegisterPage />
+    </AuthGuard>
+  )
 }

@@ -10,7 +10,9 @@ import {
 import type { Route } from "./+types/root"
 import QueryProvider from "~/providers/query-provider"
 import ReduxProvider from "~/providers/redux-provider"
+import { TokenValidator } from "~/components/token-validator"
 import "./app.css"
+import { Toaster } from "./components/ui/sonner"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -38,6 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <Toaster richColors />
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -49,9 +52,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <ReduxProvider>
-      <QueryProvider>
-        <Outlet />
-      </QueryProvider>
+      <TokenValidator>
+        <QueryProvider>
+          <Outlet />
+        </QueryProvider>
+      </TokenValidator>
     </ReduxProvider>
   )
 }

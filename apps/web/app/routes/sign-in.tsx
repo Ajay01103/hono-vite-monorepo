@@ -1,13 +1,18 @@
 import LoginPage from "~/components/login"
-import type { Route } from "./+types/home"
+import { AuthGuard } from "~/components/route-guards"
+import type { Route } from "./+types/sign-in"
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Sign In" },
+    { name: "description", content: "Sign in to your account" },
   ]
 }
 
-export default function Home() {
-  return <LoginPage />
+export default function SignIn() {
+  return (
+    <AuthGuard>
+      <LoginPage />
+    </AuthGuard>
+  )
 }

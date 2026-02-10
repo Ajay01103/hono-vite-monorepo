@@ -9,8 +9,8 @@ import { useRegister } from "~/api/useAuth"
 
 const registerSchema = z.object({
   firstname: z.string().min(2, "First name must be at least 2 characters"),
-  lastname: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  lastname: z.string(),
+  email: z.email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 })
 
@@ -129,9 +129,17 @@ export default function RegisterPage() {
                           onChange={(e) => field.handleChange(e.target.value)}
                           aria-invalid={isInvalid}
                         />
-                        {isInvalid && (
+                        {isInvalid && field.state.meta.errors.length > 0 && (
                           <p className="text-sm text-red-500">
-                            {field.state.meta.errors.join(", ")}
+                            {field.state.meta.errors
+                              .map((err: any) => {
+                                if (typeof err === "string") return err
+                                if (err?.message) return err.message
+                                if (err?.issues?.[0]?.message)
+                                  return err.issues[0].message
+                                return JSON.stringify(err)
+                              })
+                              .join(", ")}
                           </p>
                         )}
                       </div>
@@ -159,9 +167,17 @@ export default function RegisterPage() {
                           onChange={(e) => field.handleChange(e.target.value)}
                           aria-invalid={isInvalid}
                         />
-                        {isInvalid && (
+                        {isInvalid && field.state.meta.errors.length > 0 && (
                           <p className="text-sm text-red-500">
-                            {field.state.meta.errors.join(", ")}
+                            {field.state.meta.errors
+                              .map((err: any) => {
+                                if (typeof err === "string") return err
+                                if (err?.message) return err.message
+                                if (err?.issues?.[0]?.message)
+                                  return err.issues[0].message
+                                return JSON.stringify(err)
+                              })
+                              .join(", ")}
                           </p>
                         )}
                       </div>
@@ -191,9 +207,16 @@ export default function RegisterPage() {
                         onChange={(e) => field.handleChange(e.target.value)}
                         aria-invalid={isInvalid}
                       />
-                      {isInvalid && (
+                      {isInvalid && field.state.meta.errors.length > 0 && (
                         <p className="text-sm text-red-500">
-                          {field.state.meta.errors.join(", ")}
+                          {field.state.meta.errors
+                            .map((err: any) => {
+                              if (typeof err === "string") return err
+                              if (err?.message) return err.message
+                              if (err?.issues?.[0]?.message) return err.issues[0].message
+                              return JSON.stringify(err)
+                            })
+                            .join(", ")}
                         </p>
                       )}
                     </div>
@@ -223,9 +246,16 @@ export default function RegisterPage() {
                         onChange={(e) => field.handleChange(e.target.value)}
                         aria-invalid={isInvalid}
                       />
-                      {isInvalid && (
+                      {isInvalid && field.state.meta.errors.length > 0 && (
                         <p className="text-sm text-red-500">
-                          {field.state.meta.errors.join(", ")}
+                          {field.state.meta.errors
+                            .map((err: any) => {
+                              if (typeof err === "string") return err
+                              if (err?.message) return err.message
+                              if (err?.issues?.[0]?.message) return err.issues[0].message
+                              return JSON.stringify(err)
+                            })
+                            .join(", ")}
                         </p>
                       )}
                     </div>
