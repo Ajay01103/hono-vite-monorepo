@@ -292,5 +292,91 @@ const app = new Hono<{ Bindings: CloudflareBindings; Variables: Variables }>()
       }
     },
   )
+  .put(
+    "/duplicate/:id",
+    zValidator(
+      "param",
+      z.object({
+        id: z.string().min(1, "Transaction ID is required"),
+      }),
+    ),
+    async (c) => {
+      try {
+        const authHeader = c.req.header("Authorization")
+
+        // Verify authentication
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+          return c.json({ error: "Unauthorized" }, 401)
+        }
+
+        const token = authHeader.substring(7)
+        const payload = verifyJwtToken(token)
+
+        if (!payload) {
+          return c.json({ error: "Invalid or expired token" }, 401)
+        }
+
+        const userId = payload.userId
+        const { id: transactionId } = c.req.valid("param")
+        const db = c.get("db")
+
+        // Find the original transaction
+        const [transaction] = await db
+          .select()
+          .from(transactions)
+          .where(and(eq(transactions.id, transactionId), eq(transactions.userId, userId)))
+          .limit(1)
+
+        if (!transaction) {
+          return c.json(
+            {
+              error: "Transaction not found",
+              message: "Transaction not found or you don't have permission to access it",
+            },
+            404,
+          )
+        }
+
+        // Create duplicate transaction
+        const [duplicated] = await db
+          .insert(transactions)
+          .values({
+            userId: transaction.userId,
+            type: transaction.type,
+            title: `Duplicate - ${transaction.title}`,
+            amount: transaction.amount,
+            category: transaction.category,
+            description: transaction.description
+              ? `${transaction.description} (Duplicate)`
+              : "Duplicated transaction",
+            receiptUrl: transaction.receiptUrl,
+            date: transaction.date,
+            paymentMethod: transaction.paymentMethod,
+            isRecurring: false,
+            recurringInterval: null,
+            nextRecurringDate: null,
+            lastProcessed: null,
+          })
+          .returning()
+
+        return c.json(
+          {
+            message: "Transaction duplicated successfully",
+            transaction: duplicated,
+          },
+          200,
+        )
+      } catch (error: any) {
+        console.error("Duplicate transaction error:", error)
+        return c.json(
+          {
+            error: "Failed to duplicate transaction",
+            message: error.message || "Unknown error",
+          },
+          500,
+        )
+      }
+    },
+  )
 
 export default app
