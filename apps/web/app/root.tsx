@@ -5,12 +5,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router"
 
 import type { Route } from "./+types/root"
 import QueryProvider from "~/providers/query-provider"
 import ReduxProvider from "~/providers/redux-provider"
 import { TokenValidator } from "~/components/token-validator"
+import Navbar from "~/components/navbar"
 import "./app.css"
 import { Toaster } from "./components/ui/sonner"
 
@@ -50,10 +52,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const location = useLocation()
+
+  // Show navbar only on app routes (overview, transactions, reports, settings)
+  const appRoutes = ["/overview", "/transactions", "/reports", "/settings"]
+  const showNavbar = appRoutes.some((route) => location.pathname.startsWith(route))
+
   return (
     <ReduxProvider>
       <TokenValidator>
         <QueryProvider>
+          {showNavbar && <Navbar />}
           <Outlet />
         </QueryProvider>
       </TokenValidator>

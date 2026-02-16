@@ -3,7 +3,7 @@ import { useAppSelector } from "~/store/hooks"
 
 /**
  * Protects auth routes (sign-in, sign-up) from authenticated users
- * Redirects to home if user is already logged in
+ * Redirects to overview if user is already logged in
  * Note: Token expiration is handled by TokenValidator component
  */
 export function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -12,7 +12,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   if (isAuthenticated) {
     return (
       <Navigate
-        to="/"
+        to="/overview"
         replace
       />
     )
