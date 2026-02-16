@@ -36,3 +36,13 @@ export function calculateNextOccurrence(
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 }
+
+export function calculatePercentageChange(
+  previousValue: number,
+  currentValue: number,
+): number {
+  if (previousValue === 0) {
+    return currentValue > 0 ? 100 : 0
+  }
+  return ((currentValue - previousValue) / Math.abs(previousValue)) * 100
+}
