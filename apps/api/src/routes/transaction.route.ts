@@ -1,7 +1,7 @@
 import { Hono } from "hono"
 import type { Database } from "../db"
 import { zValidator } from "@hono/zod-validator"
-import z from "zod/v4"
+import z from "zod"
 import {
   PaymentMethodEnum,
   RecurringIntervalEnum,

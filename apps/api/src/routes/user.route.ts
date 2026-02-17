@@ -1,13 +1,11 @@
+import { v2 as cloudinary } from "cloudinary"
+import { eq } from "drizzle-orm"
 import { Hono } from "hono"
+import { Env } from "../config/env.confg"
 import { Database } from "../db"
+import { users } from "../db/schema"
 import { verifyJwtToken } from "../utils/jwt"
 import { omitPassword } from "../utils/user-helpers"
-import { zValidator } from "@hono/zod-validator"
-import { v2 as cloudinary } from "cloudinary"
-import z from "zod/v4"
-import { users } from "../db/schema"
-import { eq } from "drizzle-orm"
-import { Env } from "../config/env.confg"
 
 type Variables = {
   db: Database
