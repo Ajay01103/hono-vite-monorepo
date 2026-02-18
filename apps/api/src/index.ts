@@ -44,28 +44,35 @@ const apiRoutes = new OpenAPIHono<{
 app.route("/api", apiRoutes)
 
 // OpenAPI documentation endpoints (at root level, after routes are registered)
-app.doc("/doc", {
-  openapi: "3.1.0",
-  info: {
-    version: "1.0.0",
-    title: "Finance Tracker API",
-    description:
-      "A comprehensive API for managing personal finances, tracking transactions, and generating analytics",
-  },
-  servers: [
-    {
-      url: "http://localhost:8787",
-      description: "Development server",
+app.doc("/doc", (c) => {
+  // Get the current request URL to dynamically set the server URL
+  const url = new URL(c.req.url)
+  const baseUrl = `${url.protocol}//${url.host}`
+
+  return {
+    openapi: "3.1.0",
+    info: {
+      version: "1.0.0",
+      title: "Finance Tracker API",
+      description:
+        "A comprehensive API for managing personal finances, tracking transactions, and generating analytics",
     },
-    {
-      url: "https://api.yourdomain.com",
-      description: "Production server",
-    },
-  ],
+    servers: [
+      {
+        url: baseUrl,
+        description:
+          url.hostname === "localhost" ? "Development server" : "Production server",
+      },
+    ],
+  }
 })
 
 // Custom doc endpoint with security schemes
 app.get("/doc.json", (c) => {
+  // Get the current request URL to dynamically set the server URL
+  const url = new URL(c.req.url)
+  const baseUrl = `${url.protocol}//${url.host}`
+
   const spec = app.getOpenAPIDocument({
     openapi: "3.1.0",
     info: {
@@ -76,12 +83,9 @@ app.get("/doc.json", (c) => {
     },
     servers: [
       {
-        url: "http://localhost:8787",
-        description: "Development server",
-      },
-      {
-        url: "https://api.yourdomain.com",
-        description: "Production server",
+        url: baseUrl,
+        description:
+          url.hostname === "localhost" ? "Development server" : "Production server",
       },
     ],
   })

@@ -4,7 +4,7 @@ import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
 import { Link } from "react-router"
 import { useForm } from "@tanstack/react-form"
-import { z } from "zod/v4"
+import { z } from "zod"
 import { useRegister } from "~/api/useAuth"
 
 const registerSchema = z.object({
