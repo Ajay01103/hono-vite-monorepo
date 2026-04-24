@@ -20,7 +20,7 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
-      const response = await client.api.auth.login.$post({
+      const response = await client.auth.login.$post({
         json: credentials,
       })
 
@@ -51,7 +51,7 @@ export const useRegister = () => {
 
   return useMutation({
     mutationFn: async (credentials: RegisterCredentials) => {
-      const response = await client.api.auth.register.$post({
+      const response = await client.auth.register.$post({
         json: credentials,
       })
 
@@ -81,7 +81,7 @@ export const getServerAuthSession = () => {
   return useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const response = await client.api.users["current-user"].$get()
+      const response = await client.users["current-user"].$get()
 
       if (!response.ok) {
         const error = await response.json()

@@ -1,5 +1,5 @@
 import { hc } from "hono/client"
-import type { AppType } from "@hono-mono/shared"
+import type { ApiRoutes } from "@hono-mono/shared"
 import { store } from "../store/store"
 
 // Custom fetch function that includes the JWT token from Redux store
@@ -24,6 +24,6 @@ const fetchWithAuth: typeof fetch = async (input, init = {}) => {
 
 // Create the RPC client pointing to your API with authentication
 // Server-side handles token validation - no client-side proxy needed
-export const client = hc<AppType>("http://127.0.0.1:8787", {
+export const client = hc<ApiRoutes>("http://127.0.0.1:8787/api", {
   fetch: fetchWithAuth,
 })

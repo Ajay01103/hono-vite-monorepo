@@ -28,7 +28,7 @@ export const useCreateTransaction = () => {
       }
 
       // Map frequency to recurringInterval for the backend
-      const response = await client.api.transactions.create.$post({
+      const response = await client.transactions.create.$post({
         json: {
           title: payload.title,
           amount,

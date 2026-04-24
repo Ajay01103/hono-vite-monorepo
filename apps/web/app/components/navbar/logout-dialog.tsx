@@ -37,7 +37,6 @@ const LogoutDialog = ({ isOpen, setIsOpen }: LogoutDialogProps) => {
       // Clear any additional auth-related items from localStorage
       if (typeof window !== "undefined") {
         localStorage.removeItem("accessToken")
-        localStorage.removeItem("refreshToken")
       }
 
       // Navigate to sign-in page
